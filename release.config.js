@@ -10,7 +10,7 @@ export default {
         changelogFile: "CHANGELOG.md",
       },
     ],
-    "@semantic-release/npm",
+    ["@semantic-release/npm", { npmPublish: true, provenance: true }],
     [
       "@semantic-release/git",
       {
