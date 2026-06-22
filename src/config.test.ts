@@ -11,7 +11,7 @@ import {
   parseMultiValue,
   resolveValueSources,
 } from "./config.js";
-import type { Field, Operator, OptionGroup } from "./types.js";
+import type { Field, Operator, OptionGroup, ValueSources } from "./types.js";
 
 // ─── normalizeOption ─────────────────────────────────────────────────────────
 
@@ -217,7 +217,7 @@ describe("resolveValueSources", () => {
 
   it("falls through to builder-level resolver when field has no valueSources", () => {
     const field: Field = { name: "f", value: "f", label: "F" };
-    const resolver = () => ["field"] as const;
+    const resolver = (): ValueSources => ["field"];
     expect(resolveValueSources(field, "=", resolver)).toEqual(["field"]);
   });
 
