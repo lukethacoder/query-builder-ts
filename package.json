@@ -5,6 +5,9 @@
   "license": "MIT",
   "author": "Luke Secomb",
   "type": "module",
+  "repository": {
+    "url": "https://github.com/lukethacoder/query-builder-ts"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -23,7 +26,8 @@
     "lint": "biome lint ./src",
     "format": "biome format ./src --write",
     "check": "biome check ./src",
-    "test": "node --experimental-vm-modules node_modules/.bin/jest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
@@ -34,6 +38,7 @@
     "@semantic-release/npm": "^13.1.5",
     "@semantic-release/release-notes-generator": "^14.1.1",
     "semantic-release": "^25.0.5",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
   }
 }
