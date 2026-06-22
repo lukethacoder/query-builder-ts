@@ -1,11 +1,11 @@
 # @lukethacoder/query-builder
 
-A TypeScript implementation of the [QueryBuilder Spec](https://github.com/query-builder/query-builder-spec) — a language-neutral standard for representing, addressing, manipulating, validating, and serializing structured filter queries.
+A TypeScript implementation of the [QueryBuilder Spec](https://github.com/lukethacoder/query-builder-spec) — a language-neutral standard for representing, addressing, manipulating, validating, and serializing structured filter queries.
 
 ## Installation
 
 ```sh
-pnpm add @query-builder/core
+pnpm add @lukethacoder/query-builder
 ```
 
 ## Overview
@@ -20,8 +20,8 @@ A query is a tree. The root is a **group**; groups contain **rules** (single con
 ## Quick start
 
 ```ts
-import { add, formatSql, remove, update } from "@query-builder/core";
-import type { RuleGroup } from "@query-builder/core";
+import { add, formatSql, remove, update } from "@lukethacoder/query-builder";
+import type { RuleGroup } from "@lukethacoder/query-builder";
 
 // Start with an empty query
 const empty: RuleGroup = { combinator: "and", rules: [] };
@@ -90,7 +90,7 @@ Operations accept either a `Path` (integer array) or a node `id` string as the l
 Appends a rule or group to the end of the target group's children.
 
 ```ts
-import { add } from "@query-builder/core";
+import { add } from "@lukethacoder/query-builder";
 
 query = add(query, { field: "age", operator: ">", value: 18 }, []);
 ```
@@ -100,7 +100,7 @@ query = add(query, { field: "age", operator: ">", value: 18 }, []);
 Removes the node at the given path.
 
 ```ts
-import { remove } from "@query-builder/core";
+import { remove } from "@lukethacoder/query-builder";
 
 query = remove(query, [0]); // remove first child of root
 ```
@@ -110,7 +110,7 @@ query = remove(query, [0]); // remove first child of root
 Sets a single property on the node at the given path.
 
 ```ts
-import { update } from "@query-builder/core";
+import { update } from "@lukethacoder/query-builder";
 
 query = update(query, "operator", ">=", [0]);
 query = update(query, "combinator", "or", []); // update root combinator
@@ -123,7 +123,7 @@ Changing `field` automatically resets `operator`, `valueSource`, and `value` by 
 Moves a node to another position. `toPath` can be a `Path`, `"up"`, or `"down"`.
 
 ```ts
-import { move } from "@query-builder/core";
+import { move } from "@lukethacoder/query-builder";
 
 query = move(query, [0], [2]);
 query = move(query, [1], "up");
@@ -135,7 +135,7 @@ query = move(query, [0], [1], { clone: true }); // copy instead of move
 Inserts a node at an exact position (always regenerates IDs on the inserted node).
 
 ```ts
-import { insert } from "@query-builder/core";
+import { insert } from "@lukethacoder/query-builder";
 
 query = insert(query, { field: "city", operator: "=", value: "London" }, [1]);
 ```
@@ -145,7 +145,7 @@ query = insert(query, { field: "city", operator: "=", value: "London" }, [1]);
 Wraps the nodes at `sourcePath` and `targetPath` together inside a new nested group at `targetPath`.
 
 ```ts
-import { group } from "@query-builder/core";
+import { group } from "@lukethacoder/query-builder";
 
 query = group(query, [1], [0]);
 ```
@@ -155,7 +155,7 @@ query = group(query, [1], [0]);
 Convert between standard and IC forms:
 
 ```ts
-import { convertToIC, convertFromIC } from "@query-builder/core";
+import { convertToIC, convertFromIC } from "@lukethacoder/query-builder";
 
 const ic = convertToIC(standardQuery);
 const standard = convertFromIC(icQuery);
@@ -168,7 +168,7 @@ const standard = convertFromIC(icQuery);
 Validates group structure: flags empty groups, invalid combinators, and malformed IC arrays.
 
 ```ts
-import { defaultValidator } from "@query-builder/core";
+import { defaultValidator } from "@lukethacoder/query-builder";
 
 const result = defaultValidator(query);
 // → Record<nodeId, { valid: boolean; reasons?: string[] }>
@@ -177,7 +177,7 @@ const result = defaultValidator(query);
 ### Custom validators
 
 ```ts
-import type { QueryValidator, RuleValidator } from "@query-builder/core";
+import type { QueryValidator, RuleValidator } from "@lukethacoder/query-builder";
 
 // Rule-level: attached to a field definition
 const ageValidator: RuleValidator = (rule) => {
@@ -199,7 +199,7 @@ All serializers accept a `validator` option — invalid rules/groups are dropped
 ### JSON
 
 ```ts
-import { formatJson, formatJsonWithoutIds, parseJson } from "@query-builder/core";
+import { formatJson, formatJsonWithoutIds, parseJson } from "@lukethacoder/query-builder";
 
 const json = formatJson(query);              // pretty JSON, includes ids
 const stable = formatJsonWithoutIds(query);  // single-line, strips ids and paths
@@ -209,7 +209,7 @@ const parsed = parseJson(json);              // round-trip back to a query tree
 ### SQL
 
 ```ts
-import { formatSql } from "@query-builder/core";
+import { formatSql } from "@lukethacoder/query-builder";
 
 formatSql(query);
 // → (firstName = 'Steve' and lastName = 'Vai')
@@ -224,7 +224,7 @@ formatSql(query, { preset: "sqlite" });
 ### Parameterized SQL
 
 ```ts
-import { formatParameterized, formatParameterizedNamed } from "@query-builder/core";
+import { formatParameterized, formatParameterizedNamed } from "@lukethacoder/query-builder";
 
 const { sql, params } = formatParameterized(query);
 // → { sql: "(firstName = ? and lastName = ?)", params: ["Steve", "Vai"] }
@@ -240,7 +240,7 @@ formatParameterized(query, { preset: "postgresql" });
 ### MongoDB query
 
 ```ts
-import { formatMongodbQuery } from "@query-builder/core";
+import { formatMongodbQuery } from "@lukethacoder/query-builder";
 
 formatMongodbQuery(query);
 // → { "$and": [{ "firstName": "Steve" }, { "lastName": "Vai" }] }
@@ -249,7 +249,7 @@ formatMongodbQuery(query);
 ### JsonLogic
 
 ```ts
-import { formatJsonLogic } from "@query-builder/core";
+import { formatJsonLogic } from "@lukethacoder/query-builder";
 
 formatJsonLogic(query);
 // → { "and": [{ "==": [{ "var": "firstName" }, "Steve"] }, { "==": [{ "var": "lastName" }, "Vai"] }] }
@@ -285,7 +285,7 @@ Paths are integer arrays describing a node's location in the tree. The root is `
 In IC queries, children occupy **even** indices (0, 2, 4 …) and combinator strings occupy odd indices.
 
 ```ts
-import { findPath, getParentPath, isAncestor } from "@query-builder/core";
+import { findPath, getParentPath, isAncestor } from "@lukethacoder/query-builder";
 
 const node = findPath([0, 1], query);
 const parent = getParentPath([0, 1]);         // → [0]
