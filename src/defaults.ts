@@ -52,6 +52,14 @@ export const OPERATOR_NEGATION_MAP: Record<string, string> = {
   notBetween: "between",
 };
 
+// Custom operators (§2.9) — not in DEFAULT_OPERATORS; consumers opt in by adding to their operator list
+export const OPERATOR_MATCHES_REGEX: Operator = {
+  name: "matchesRegex",
+  value: "matchesRegex",
+  label: "matches regex",
+  arity: "binary",
+};
+
 export const MULTI_VALUE_OPERATORS = new Set(["in", "notIn", "between", "notBetween"]);
 export const UNARY_OPERATORS = new Set(["null", "notNull"]);
 export const TERNARY_OPERATORS = new Set(["between", "notBetween"]);
